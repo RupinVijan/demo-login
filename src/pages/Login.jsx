@@ -1,11 +1,12 @@
-import React , {useState} from 'react'
-import Navbar from '../components/Navbar';
+import React , {useState} from "react";
+import "../assets/css/login.css";
+import Navbar from "../components/Navbar";
 
-function SignUp() {
+function Login() {
   const [userData, setUserData] = useState({email:"",password:""});
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:8080/api/signup' , {
+    const res = await fetch('http://localhost:8080/api/login' , {
       method:'POST',
       headers: {
         "Content-Type": "application/json",
@@ -17,6 +18,7 @@ function SignUp() {
       localStorage.setItem("userToken", response.user._id);
       // toast(response.msg)
       window.alert(response.msg)
+      window.location = '/question';
     }else{
       // toast(response.msg)
       window.alert(response.msg)
@@ -29,7 +31,7 @@ function SignUp() {
     <div className="container">
       <div className="card"></div>
       <div className="card">
-        <h1 className="title">Register</h1>
+        <h1 className="title">Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-container">
             <input type="email" id="email" name="email" value={userData.email} onChange={(e)=>{setUserData({...userData , email:e.currentTarget.value})}} required/>
@@ -54,4 +56,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default Login;

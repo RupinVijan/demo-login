@@ -89,6 +89,7 @@ function AskQuestion() {
   return (
     <div>
         <Navbar/>
+        <h1 className='text-center display-4 text-danger'>Ask a Question?</h1>
         <Question reload={reload} setreload={setreload} />
         <ShowQuestions reload={reload} setreload={setreload} />
     </div>
