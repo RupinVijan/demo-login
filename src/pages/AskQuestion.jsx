@@ -54,24 +54,15 @@ function Question ( {reload , setreload}) {
 }
 
 
-function ShowQuestions ({reload , setreload}) {
-    const [questionToDisplay, setQuestionToDisplay] = useState([]);
-useEffect(() => {
-    async function x(){
-    const res = await fetch('https://demo-login-back.herokuapp.com/api/question')
-    const response = await res.json();
-    setQuestionToDisplay(response.question)
-    }
-    setreload(true)
-    x();
-}, [!reload]);
+function ShowQuestions ({questionToDisplay}) {
+   
     
     return(
         <div className='container'>
             <ul id="list" class="list">
            { questionToDisplay.map((e) => {
                 return(
-                    <li class="item" id="${todo.id}" >
+                    <li class="item">
   <span class="text">
     {e.question}
   </span>
@@ -86,12 +77,22 @@ useEffect(() => {
 
 function AskQuestion() { 
     const [reload, setreload] = useState(false);
+    const [questionToDisplay, setQuestionToDisplay] = useState([]);
+    useEffect(() => {
+        async function x(){
+        const res = await fetch('https://demo-login-back.herokuapp.com/api/question')
+        const response = await res.json();
+        setQuestionToDisplay(response.question)
+        }
+        setreload(true)
+        x();
+    }, [reload]);
   return (
     <div>
         <Navbar/>
         <h1 className='text-center display-4 text-danger'>Ask a Question?</h1>
         <Question reload={reload} setreload={setreload} />
-        <ShowQuestions reload={reload} setreload={setreload} />
+        <ShowQuestions questionToDisplay={questionToDisplay} />
     </div>
   )
 }
