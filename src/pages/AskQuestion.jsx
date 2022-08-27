@@ -12,7 +12,7 @@ function Question ( {reload , setreload}) {
         token:userId,
         question:questionAsked
        }
-       const res = await fetch('http://localhost:8080/api/question' , {
+       const res = await fetch('https://demo-login-back.herokuapp.com/api/question' , {
       method:'POST',
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ function ShowQuestions ({reload , setreload}) {
     const [questionToDisplay, setQuestionToDisplay] = useState([]);
 useEffect(() => {
     async function x(){
-    const res = await fetch('http://localhost:8080/api/question')
+    const res = await fetch('https://demo-login-back.herokuapp.com/api/question')
     const response = await res.json();
     setQuestionToDisplay(response.question)
     }
