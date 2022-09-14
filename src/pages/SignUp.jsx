@@ -2,10 +2,10 @@ import React , {useState} from 'react'
 import Navbar from '../components/Navbar';
 
 function SignUp() {
-  const [userData, setUserData] = useState({email:"",password:""});
+  const [userData, setUserData] = useState({email:"",password:"" , });
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const res = await fetch('https://demo-login-back.herokuapp.com/api/signup' , {
+    const res = await fetch('http://localhost:8080/api/signup' , {
       method:'POST',
       headers: {
         "Content-Type": "application/json",
@@ -14,7 +14,7 @@ function SignUp() {
     })
     const response = await res.json();
     if(response.status){
-      localStorage.setItem("userToken", response.user._id);
+      localStorage.setItem("userToken", response.user.Item.email);
       // toast(response.msg)
       window.alert(response.msg)
       window.location = '/question';
@@ -22,6 +22,8 @@ function SignUp() {
       // toast(response.msg)
       window.alert(response.msg)
     }
+   
+    // }
   }
   return (
     <div>
@@ -39,6 +41,36 @@ function SignUp() {
           </div>
           <div className="input-container">
             <input type="password" id="password" name="password" value={userData.password} onChange={(e)=>{setUserData({...userData , password:e.currentTarget.value})}} required />
+            <label htmlFor="password">Password</label>
+            <div className="bar"></div>
+          </div>
+          <div className="input-container">
+            <input  type="file" accept="image/*" id="image" name="image"  onChange={async(e)=>{
+              let file = e.target
+               const {url, fields} = await fetch("http://localhost:8080/get-signed-url").then(response => response.json())
+
+               const data = {
+                 bucket: "test-website-backend",
+                 ...fields,
+                 'Content-Type': file.files[0].type,
+                 file: file.files[0],
+               };
+         
+               const formData  = new FormData();
+               for (const name in data) {
+                 formData.append(name, data[name]);
+               }
+         
+               const response = await fetch(url, {
+                 method: 'POST',
+                 body: formData,
+               });
+               console.log(response)
+               const tempURL = `https://test-website-infobility.s3.ap-south-1.amazonaws.com/${fields.key}`
+              setUserData({...userData ,  image:tempURL})
+            }
+            }
+               required />
             <label htmlFor="password">Password</label>
             <div className="bar"></div>
           </div>

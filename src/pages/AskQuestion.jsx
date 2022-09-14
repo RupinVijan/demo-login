@@ -2,97 +2,33 @@ import React,{useState ,useEffect} from 'react'
 import Navbar from '../components/Navbar'
 import '../assets/css/question.css'
 
-function Question ( {reload , setreload}) {
-    const [questionAsked, setQuestionAsked] = useState("");
-    async function handleSubmit(e){
-        e.preventDefault();
-       let userId =  await localStorage.getItem("userToken")
-       if(!userId){window.alert('User Not logged in!')}
-       let body = {
-        token:userId,
-        question:questionAsked
-       }
-       const res = await fetch('https://demo-login-back.herokuapp.com/api/question' , {
-      method:'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body:JSON.stringify(body)
-    })
-    const response = await res.json();
-    if(response.status){
-        setreload(false)
-        setQuestionAsked("")
-      // toast(response.msg)
-      window.alert(response.msg)
-    }else{
-      // toast(response.msg)
-      window.alert(response.msg)
-    }
-    }
-    return (
-        <div className="container">
-            <form id="form" class="form" onSubmit={handleSubmit}>
-    <input
-      type="text"
-      class="input"
-      id="question"
-      value={questionAsked}
-      onChange={(e)=>{
-        setQuestionAsked(e.currentTarget.value)
-      }}
-    />
-    <button
-      class="btn btn-danger"
-      data-type="add"
-    >
-      Add
-    </button>
-</form>
-        </div>
-    );
-}
-
-
-function ShowQuestions ({questionToDisplay}) {
-   
-    
-    return(
-        <div className='container'>
-            <ul id="list" class="list">
-           { questionToDisplay.map((e) => {
-                return(
-                    <li class="item">
-  <span class="text">
-    {e.question}
-  </span>
- 
-</li>
-                );
-            })}
-            </ul>
-        </div>
-    );
-}
 
 function AskQuestion() { 
     const [reload, setreload] = useState(false);
-    const [questionToDisplay, setQuestionToDisplay] = useState([]);
+    const [questionToDisplay, setQuestionToDisplay] = useState();
     useEffect(() => {
         async function x(){
-        const res = await fetch('https://demo-login-back.herokuapp.com/api/question')
+          let userId =  await localStorage.getItem("userToken")
+        const res = await fetch(`http://localhost:8080/api/user/${userId}`)
         const response = await res.json();
-        setQuestionToDisplay(response.question)
+        console.log(response)
+        if(response.status)
+        {setQuestionToDisplay(response.user.Item)}
+        else{
+          setQuestionToDisplay(null)
+        }
+        // console.log(questionToDisplay.email)
         }
         setreload(true)
         x();
     }, [reload]);
+    
   return (
     <div>
         <Navbar/>
-        <h1 className='text-center display-4 text-danger'>Ask a Question?</h1>
-        <Question reload={reload} setreload={setreload} />
-        <ShowQuestions questionToDisplay={questionToDisplay} />
+        <h1 className='text-center display-4 text-danger'>Profile</h1>
+        {questionToDisplay?(<h2>Email : {questionToDisplay.email}</h2>):(<h2>Please Login</h2>)}
+        
     </div>
   )
 }

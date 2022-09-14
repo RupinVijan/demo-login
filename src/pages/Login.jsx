@@ -6,7 +6,7 @@ function Login() {
   const [userData, setUserData] = useState({email:"",password:""});
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const res = await fetch('https://demo-login-back.herokuapp.com/api/login' , {
+    const res = await fetch('http://localhost:8080/api/login' , {
       method:'POST',
       headers: {
         "Content-Type": "application/json",
@@ -14,8 +14,9 @@ function Login() {
       body:JSON.stringify(userData)
     })
     const response = await res.json();
+    console.log(response)
     if(response.status){
-      localStorage.setItem("userToken", response.user._id);
+      localStorage.setItem("userToken", response.user.Item.email);
       // toast(response.msg)
       window.alert(response.msg)
       window.location = '/question';
