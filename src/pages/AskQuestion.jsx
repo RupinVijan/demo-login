@@ -27,7 +27,11 @@ function AskQuestion() {
     <div>
         <Navbar/>
         <h1 className='text-center display-4 text-danger'>Profile</h1>
-        {questionToDisplay?(<h2>Email : {questionToDisplay.email}</h2>):(<h2>Please Login</h2>)}
+        {questionToDisplay?(<>
+        <img src={questionToDisplay?.image} alt="dp" height='200px' width='160px' className='m-2' />
+        <h2>Email : {questionToDisplay.email}</h2>
+        </>):(<h2>Please Login</h2>
+        )}
         
     </div>
   )
