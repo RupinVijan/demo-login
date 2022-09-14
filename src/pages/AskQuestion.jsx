@@ -9,7 +9,7 @@ function AskQuestion() {
     useEffect(() => {
         async function x(){
           let userId =  await localStorage.getItem("userToken")
-        const res = await fetch(`http://localhost:8080/api/user/${userId}`)
+        const res = await fetch(`https://demo-login-back.herokuapp.com/api/user/${userId}`)
         const response = await res.json();
         console.log(response)
         if(response.status)

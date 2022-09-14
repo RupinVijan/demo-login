@@ -5,7 +5,7 @@ function SignUp() {
   const [userData, setUserData] = useState({email:"",password:"" , });
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:8080/api/signup' , {
+    const res = await fetch('https://demo-login-back.herokuapp.com/api/signup' , {
       method:'POST',
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function SignUp() {
           <div className="input-container">
             <input  type="file" accept="image/*" id="image" name="image"  onChange={async(e)=>{
               let file = e.target
-               const {url, fields} = await fetch("http://localhost:8080/get-signed-url").then(response => response.json())
+               const {url, fields} = await fetch("https://demo-login-back.herokuapp.com/get-signed-url").then(response => response.json())
 
                const data = {
                  bucket: "test-website-backend",
